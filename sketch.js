@@ -3,7 +3,7 @@ const ORIGINAL_FILE = 'qr_clean_000';
 const START_INDEX = 1;
 const END_INDEX = 36;
 const IMG_SIZE = 1000;
-const DISPLAY_SIZE = 220;
+const DISPLAY_SIZE = 350;
 const THRESHOLD = 128;
 
 const startBtn = document.getElementById('startBtn');
