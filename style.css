@@ -1,0 +1,72 @@
+body {
+  background: #fff;
+}
+
+table {
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+th, td {
+  border: 1px solid #ccc;
+  padding: 4px;
+  text-align: center;
+}
+
+td canvas {
+  display: block;
+  margin: 0 auto;
+  image-rendering: pixelated;
+}
+
+#legend {
+  position: fixed;
+  right: 10px;
+  bottom: 10px;
+  font-size: 12px;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-collapse: collapse;
+  z-index: 100;
+}
+
+#legend td {
+  border: 1px solid #ccc;
+  padding: 3px 6px;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.swatch {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  vertical-align: middle;
+  border: 1px solid #999;
+}
+
+.swatch.red {
+  background: red;
+}
+
+.swatch.blue {
+  background: blue;
+}
+
+.col-fill {
+  color: red;
+}
+
+.col-overflow {
+  color: blue;
+}
+
+td.col-fill {
+  background: #ffe5e5;
+  color: #000;
+}
+
+td.col-overflow {
+  background: #e5e5ff;
+  color: #000;
+}

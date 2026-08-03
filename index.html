@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>QR 손그림 오차 분석</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<button id="startBtn">분석 시작</button>
+<button id="copyBtn">전체 결과 JSON 복사</button>
+<span id="status"></span>
+
+<table id="legend">
+  <tbody>
+    <tr>
+      <td><span class="swatch red"></span></td>
+      <td>원본 검정 → 손그림 흰색 (미채움)</td>
+      <td>검정 미채움률 ↑</td>
+    </tr>
+    <tr>
+      <td><span class="swatch blue"></span></td>
+      <td>원본 흰색 → 손그림 검정 (침범)</td>
+      <td>흰색 영역 침범률 ↑</td>
+    </tr>
+  </tbody>
+</table>
+
+<table id="resultTable">
+  <thead>
+    <tr>
+      <th>파일명</th>
+      <th>썸네일</th>
+      <th>diff</th>
+      <th class="col-fill">검정 미채움률</th>
+      <th class="col-overflow">흰색 영역 침범률</th>
+    </tr>
+  </thead>
+  <tbody id="resultBody"></tbody>
+</table>
+
+<script src="sketch.js"></script>
+</body>
+</html>
