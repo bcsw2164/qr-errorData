@@ -1,7 +1,7 @@
 const IMG_DIR = 'images';
 const ORIGINAL_FILE = 'qr_clean_000';
 const START_INDEX = 1;
-const END_INDEX = 87;
+const END_INDEX = 151;
 const IMG_SIZE = 1000;
 const DISPLAY_SIZE = 350;
 const THRESHOLD = 128;
@@ -10,6 +10,12 @@ const startBtn = document.getElementById('startBtn');
 const copyBtn = document.getElementById('copyBtn');
 const statusEl = document.getElementById('status');
 const resultBody = document.getElementById('resultBody');
+const fillMaxEl = document.getElementById('fillMax');
+const fillMinEl = document.getElementById('fillMin');
+const overflowMaxEl = document.getElementById('overflowMax');
+const overflowMinEl = document.getElementById('overflowMin');
+const avgMaxEl = document.getElementById('avgMax');
+const avgMinEl = document.getElementById('avgMin');
 
 const results = {};
 
@@ -141,6 +147,7 @@ async function runAnalysis() {
   startBtn.disabled = true;
   resultBody.innerHTML = '';
   for (const key in results) delete results[key];
+  updateSummary();
   statusEl.textContent = '원본 로딩 중...';
 
   let origImg;
@@ -173,8 +180,49 @@ async function runAnalysis() {
     results[filename] = { unfilledRate: Number(unfilledRate.toFixed(3)), overflowRate: Number(overflowRate.toFixed(3)) };
   }
 
+  updateSummary();
+
   statusEl.textContent = '분석 완료';
   startBtn.disabled = false;
+}
+
+function updateSummary() {
+  const entries = Object.entries(results);
+  if (entries.length === 0) {
+    fillMaxEl.textContent = '-';
+    fillMinEl.textContent = '-';
+    overflowMaxEl.textContent = '-';
+    overflowMinEl.textContent = '-';
+    avgMaxEl.textContent = '-';
+    avgMinEl.textContent = '-';
+    return;
+  }
+
+  const avgOf = (rates) => (rates.unfilledRate + rates.overflowRate) / 2;
+
+  let fillMax = entries[0];
+  let fillMin = entries[0];
+  let overflowMax = entries[0];
+  let overflowMin = entries[0];
+  let avgMax = entries[0];
+  let avgMin = entries[0];
+
+  for (const entry of entries) {
+    const [, rates] = entry;
+    if (rates.unfilledRate > fillMax[1].unfilledRate) fillMax = entry;
+    if (rates.unfilledRate < fillMin[1].unfilledRate) fillMin = entry;
+    if (rates.overflowRate > overflowMax[1].overflowRate) overflowMax = entry;
+    if (rates.overflowRate < overflowMin[1].overflowRate) overflowMin = entry;
+    if (avgOf(rates) > avgOf(avgMax[1])) avgMax = entry;
+    if (avgOf(rates) < avgOf(avgMin[1])) avgMin = entry;
+  }
+
+  fillMaxEl.textContent = `${fillMax[0]} (${fillMax[1].unfilledRate.toFixed(3)})`;
+  fillMinEl.textContent = `${fillMin[0]} (${fillMin[1].unfilledRate.toFixed(3)})`;
+  overflowMaxEl.textContent = `${overflowMax[0]} (${overflowMax[1].overflowRate.toFixed(3)})`;
+  overflowMinEl.textContent = `${overflowMin[0]} (${overflowMin[1].overflowRate.toFixed(3)})`;
+  avgMaxEl.textContent = `${avgMax[0]} (${avgOf(avgMax[1]).toFixed(3)})`;
+  avgMinEl.textContent = `${avgMin[0]} (${avgOf(avgMin[1]).toFixed(3)})`;
 }
 
 async function copyResults() {
